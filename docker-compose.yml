@@ -1,6 +1,16 @@
 version: '3.3'
 
 services:
+  # PART 1: Using Nginx as Reverse Proxy 
+  # rproxy:  
+  #   image: nginx:latest
+  #   ports:
+  #   - 80:80
+  #   volumes:
+  #   - ./nginx.conf:/etc/nginx/conf.d/default.conf
+  #   networks:
+  #   - mynetwork
+    
   nginx:
     image: nginx:latest
     deploy:
@@ -28,31 +38,7 @@ services:
     #   - 82:80
     networks:
     - mynetwork
-
-  caddy:
-    image: abiosoft/caddy:latest
-    deploy:
-      replicas: 1
-      labels:
-      - traefik.enable=true
-      - traefik.http.routers.caddy.entrypoints=web
-      - traefik.http.routers.caddy.rule=Host:caddy.localhost
-      - traefik.http.services.caddy.loadbalancer.server.port=2015
-      
-    # ports:
-    #   - 83:2015
-    networks:
-    - mynetwork
-
-  # PART 1: Using Nginx as Reverse Proxy 
-  # rproxy:  
-  #   image: nginx:latest
-  #   ports:
-  #   - 80:80
-  #   volumes:
-  #   - ./nginx.conf:/etc/nginx/conf.d/default.conf
-  #   networks:
-  #   - mynetwork
+    
 
   # PART 2: Using Traefik
   traefik:
@@ -69,6 +55,7 @@ services:
       - ./access.log:/etc/traefik/accsess.log
     ports:
     - 80:80
+    - 443:443
     - 8080:8080
     networks:
     - mynetwork
