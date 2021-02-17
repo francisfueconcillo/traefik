@@ -1,0 +1,14 @@
+http:
+  routers:
+    react:
+      rule: Host:react.localhost
+      service: auth
+      entrypoints: web
+      tls: {}
+  
+  services:
+    react:
+      loadBalancer:
+        servers:
+          - url: http://localhost:3000
+          
